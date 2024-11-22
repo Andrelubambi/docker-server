@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  servidor:
+    build:
+      context: ./server
+    container_name: servidor
+    ports:
+      - "8080:8080"  # Porta para o servidor v1
+
+  servidor_v2:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.v2  # Novo Dockerfile para o servidor v2
+    container_name: servidor_v2
+    ports:
+      - "8081:8080"  # Porta para o servidor v2
+
+  cliente:
+    build:
+      context: ./client
+    container_name: cliente
+    depends_on:
+      - servidor_v2  # O cliente depende do servidor v2
+
