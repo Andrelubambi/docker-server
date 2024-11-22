@@ -1,15 +1,20 @@
 import requests
-import time
 
-def request_to_server():
-    try:
-        print("Enviando requisição ao servidor ...")
-        response = requests.get("http://servidor:8080")
-        print(f"StatusCode da requisição: {response.status_code}")
-        print("Conteúdo da resposta:", response.text)
-    except Exception as e:
-        print("Erro ao fazer requisição:", e)
+def main():
+    servidor_url = "http://servidor_v2:8081"
+
+    
+    print("Enviando requisição ao servidor ...")
+    
+    # Requisição GET para a página inicial
+    response = requests.get(servidor_url)
+    print("StatusCode da requisição: {0}".format(response.status_code))
+    print("Conteúdo da resposta: {0}".format(response.text))
+    
+    # Requisição GET para o endpoint /status
+    response_status = requests.get(f"{servidor_url}/status")
+    print("StatusCode da requisição ao /status: {0}".format(response_status.status_code))
+    print("Conteúdo da resposta do /status: {0}".format(response_status.text))
 
 if __name__ == "__main__":
-    request_to_server()
-   ## time.sleep(60)  # Mantém o cliente em execução por 60 segundos após a requisição
+    main()

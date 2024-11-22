@@ -14,7 +14,7 @@ services:
       dockerfile: Dockerfile.v2  # Novo Dockerfile para o servidor v2
     container_name: servidor_v2
     ports:
-      - "8081:8080"  # Porta para o servidor v2
+      - "8081:8080"  # Porta para o servidor v2 (mapeando 8081 para o 8080 interno)
 
   cliente:
     build:
@@ -22,4 +22,13 @@ services:
     container_name: cliente
     depends_on:
       - servidor_v2  # O cliente depende do servidor v2
+    command: |
+      bash -c "sleep 10 && python client.py"  # Aguarda o servidor inicializar antes de rodar o cliente
 
+  monitor:
+    image: python:3.10-slim
+    container_name: monitor
+    depends_on:
+      - servidor_v2  # Monitor depende do servidor v2
+    command: |
+      bash -c "apt-get update && apt-get install -y curl && while true; do curl http://servidor_v2:8080/status; sleep 10; done"
