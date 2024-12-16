@@ -30,6 +30,77 @@ servidor-docker
 
 ## Pré-requisitos
 
+
+
+
+Aqui estão os passos para iniciar um contêiner Docker, verificar seu status e interagir com ele para executar o servidor:
+
+1. Iniciar o contêiner
+Certifique-se de que seu docker-compose.yml está configurado corretamente e inicie o contêiner:
+
+bash
+Copiar código
+sudo docker-compose up --build
+O parâmetro --build força a reconstrução das imagens Docker caso tenha feito alterações no código ou no Dockerfile.
+Para rodar em segundo plano (modo "detached"):
+bash
+Copiar código
+sudo docker-compose up -d
+2. Verificar se o contêiner está em execução
+Liste os contêineres ativos:
+
+bash
+Copiar código
+sudo docker ps
+Exemplo de saída:
+
+bash
+Copiar código
+CONTAINER ID   IMAGE                         COMMAND               STATUS              PORTS                     NAMES
+abc123456789   servidor-docker_servidor_v2   "python server.py"    Up 2 minutes        0.0.0.0:8081->8080/tcp    servidor_v2
+STATUS indica se o contêiner está rodando.
+PORTS mostra os mapeamentos de porta (ex.: 8081->8080).
+NAMES mostra o nome do contêiner (ex.: servidor_v2).
+3. Exibir logs do contêiner
+Confira os logs para verificar se o servidor foi inicializado corretamente:
+
+bash
+Copiar código
+sudo docker logs servidor_v2
+Se o servidor não estiver rodando, os logs geralmente mostram mensagens de erro.
+
+4. Verificar o estado detalhado do contêiner
+Para obter informações detalhadas do contêiner:
+
+bash
+Copiar código
+sudo docker inspect servidor_v2
+Isso exibe informações sobre a configuração, estado, redes, e muito mais.
+
+5. Acessar o terminal do contêiner
+Para interagir diretamente com o contêiner:
+
+bash
+Copiar código
+sudo docker exec -it servidor_v2 bash
+Dentro do contêiner:
+
+Verifique os processos ativos:
+bash
+Copiar código
+ps aux
+Teste o servidor:
+bash
+Copiar código
+curl http://localhost:8080/status
+6. Reiniciar ou parar o contêiner
+Reiniciar:
+bash
+Copiar código
+sudo docker restart servidor_v2
+Parar:
+
+
 Antes de executar o projeto, é necessário ter o Docker e o Docker Compose instalados no seu sistema.
 
 - [Instalar Docker](https://docs.docker.com/get-docker/)
@@ -50,9 +121,11 @@ Antes de executar o projeto, é necessário ter o Docker e o Docker Compose inst
 `sudo docker-compose up --build`
 
 
+
 ### 3. Verifique os contêineres em execução:
 
-`docker ps`
+`sudo docker ps`
+`sudo docker-compose up`
 
 
 ### 4. Para parar os contêineres:
@@ -64,7 +137,7 @@ Antes de executar o projeto, é necessário ter o Docker e o Docker Compose inst
 `sudo docker-compose ps`
 
 ### 5. Rodar o server_v2.py
-`python server_v2.py`
+`python3 server_v2.py`
 
 
 ### Logs em tempo real 
@@ -139,7 +212,7 @@ Antes de executar o projeto, é necessário ter o Docker e o Docker Compose inst
 - **Método HTTP:** `GET`
 - **Descrição:** Retorna informações sobre a versão da API e o tempo do servidor.
 - **O que deve ser enviado:** Nenhum parâmetro de entrada.
-- **Resposta:**
+- **Resposta:**sudo sy
     - **Código de status:** `200 OK`
     - **Tipo de conteúdo:** `application/json`
     - **Corpo da resposta:**
