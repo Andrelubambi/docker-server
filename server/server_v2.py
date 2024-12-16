@@ -16,12 +16,14 @@ class MyHandler(SimpleHTTPRequestHandler):
             }
             self.wfile.write(bytes(json.dumps(status), "utf-8"))
         
-        elif self.path.startswith('/hello'):
+        elif self.path.startswith('/hello/'):
             name = self.path.split('/')[-1]
+            name = unquote(name)
+            response = f"<html><body>Hello, {name}!/body></html>"
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(f"<h1>Hello, {name}!</h1>".encode('utf-8'))
+           # self.wfile.write(f"<h1>Hello, {name}!</h1>".encode('utf-8'))
         
         elif self.path.startswith('/search'):
             query_params = parse_qs(self.path.split('?')[1])
