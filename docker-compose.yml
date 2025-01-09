@@ -11,7 +11,7 @@ services:
   servidor_v2:
     build:
       context: ./server
-      dockerfile: Dockerfile.v2  # Novo Dockerfile para o servidor v2
+      dockerfile: Dockerfile.v2  
     container_name: servidor_v2
     ports:
       - "8081:8080"  # Porta para o servidor v2 (mapeando 8081 para o 8080 interno)

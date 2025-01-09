@@ -1,6 +1,7 @@
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import time
 import json
+from urllib.parse import unquote
 from urllib.parse import parse_qs
 
 class MyHandler(SimpleHTTPRequestHandler):
@@ -18,12 +19,12 @@ class MyHandler(SimpleHTTPRequestHandler):
         
         elif self.path.startswith('/hello/'):
             name = self.path.split('/')[-1]
-            name = unquote(name)
-            response = f"<html><body>Hello, {name}!/body></html>"
+            name = unquote(name)  
+            response = f"<html><body>Hello, {name}!</body></html>"
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-           # self.wfile.write(f"<h1>Hello, {name}!</h1>".encode('utf-8'))
+            self.wfile.write(response.encode('utf-8'))
         
         elif self.path.startswith('/search'):
             query_params = parse_qs(self.path.split('?')[1])
@@ -60,7 +61,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             error_message = {
-                "error": "Resource not found",
+                "error": "Recuros não encntrado",
                 "path": self.path
             }
             self.wfile.write(bytes(json.dumps(error_message), "utf-8"))
@@ -91,7 +92,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             response = {
-                "message": "Data updated successfully",
+                "message": "Dados atualizados com sucesso!",
                 "updated_data": data
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
@@ -104,7 +105,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             response = {
-                "message": "Data deleted successfully"
+                "message": "Dados eleminados com sucesso"
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
         else:
@@ -115,7 +116,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-type", "application/json")
         self.end_headers()
         error_message = {
-            "error": "Resource not found",
+            "error": "Recursos não encontrados",
             "path": self.path
         }
         self.wfile.write(bytes(json.dumps(error_message), "utf-8"))
